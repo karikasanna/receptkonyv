@@ -17,7 +17,7 @@ class RecipeController extends Controller
             'description'      => 'nullable|string|max:500',
         ]);
 
-        DB::table('books')->insert($validated);
+        DB::table('recipes')->insert($validated);
 
         return response()->json(['message' => 'Sikeresen hozzáadtad a receptet.'], 201);
     }
