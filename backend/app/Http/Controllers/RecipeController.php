@@ -40,6 +40,25 @@ class RecipeController extends Controller
         return $recipes;
     }
 
+    public function oneRecipe($id)
+    {
+        $recipe = DB::table('recipes')
+            ->join('categories', 'recipes.cat_id', '=', 'categories.id')
+            ->select(
+                'recipes.id as recipe_id',
+                'recipes.name as recipe_name',
+                'recipes.cat_id as cat_id',
+                'categories.name as cat_name',
+                'recipes.img_source',
+                'recipes.description',
+            )
+            ->where('recipes.id', '=', $id)
+            ->groupBy('recipes.id', 'recipes.name', 'recipes.cat_id', 'categories.name', 'recipes.img_source', 'recipes.description')
+            ->get();
+
+        return $recipe;
+    }
+
     public function recipesByCategories($id)
     {
         $recipes = DB::table('recipes')

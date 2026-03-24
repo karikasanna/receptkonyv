@@ -12,7 +12,7 @@ export interface Recipe {
 }
 
 function RecipeTable() {
-  const allRecipes = "http://127.0.0.1:8000/api/all-recipes";
+  const allRecipes = "http://127.0.0.1:8000/api/recipes";
   const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
