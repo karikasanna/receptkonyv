@@ -19,16 +19,16 @@ return new class extends Migration
         });
 
         Category::create([
-            'name' => 'main',
+            'name' => 'főétel',
         ]);
         Category::create([
-            'name' => 'soup',
+            'name' => 'leves',
         ]);
         Category::create([
-            'name' => 'dessert',
+            'name' => 'desszert',
         ]);
         Category::create([
-            'name' => 'salad',
+            'name' => 'saláta',
         ]);
 
     }
