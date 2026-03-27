@@ -8,50 +8,79 @@ export interface Recipe {
   cat_name: string;
   img_source: string;
   description: string;
-
 }
 
 function RecipeTable() {
-  const allRecipes = "http://127.0.0.1:8000/api/recipes";
+  const mainUrl = "http://127.0.0.1:8000/api/";
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [recipeId, setRecipeId] = useState("");
+  const singleRecipe = `http://127.0.0.1:8000/api/recipes/${recipeId}`;
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [endpoint, setEndpoint] = useState("recipes");
 
   useEffect(() => {
-    fetch(allRecipes)
+    fetch(mainUrl + endpoint)
+      .then((res) => res.json())
+      .then((data) => {
+        setRecipes(data);
+      });
+  }, [endpoint]);
+
+  useEffect(() => {
+    if (!recipeId) return;
+    fetch(singleRecipe)
       .then((res) => res.json())
 
       .then((data) => {
-        console.log("API válasz:", data);
-        setRecipes(data);
+        setRecipe(data[0]);
       });
-  }, []);
-  console.log(recipes);
-
-  const handleRecept = (id: number) => {
-    console.log(id);
-  };
+  }, [recipeId]);
 
   return (
-    <>
-      <table border={1} cellPadding={5}>
-        <thead>
-          <tr>
-            <th>Recept neve</th>
-            <th>Kategória</th>
-          </tr>
-        </thead>
-        <tbody>
-          {recipes.map((recipe, id) => (
-            <tr key={id}>
-              <td onClick={() => handleRecept(recipe.recipe_id)}>{recipe.recipe_name}</td>
-              <td>{recipe.cat_name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="card">
-        <RecipeCard />
+    <div>
+      <div className="dropdown">
+        <label>Válassz kategóriát: </label>
+
+        <select
+          onChange={(e) => setEndpoint(`recipes/category/${e.target.value}`)}
+        >
+          <option value="">Összes</option>
+          <option value="1">Főétel</option>
+          <option value="2">Leves</option>
+          <option value="3">Desszert</option>
+          <option value="4">Saláta</option>
+        </select>
       </div>
-    </>
+      <div className="recipeTable">
+        <table border={1} cellPadding={10} width={500}>
+          <thead>
+            <tr>
+              <th>Recept neve</th>
+              <th>Kategória</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recipes.map((recipe, index) => (
+              <tr key={index}>
+                <td
+                  onClick={() => {
+                    setRecipeId(recipe.recipe_id.toString());
+                  }}
+                >
+                  {recipe.recipe_name}
+                </td>
+                <td>{recipe.cat_name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="recipeCard">
+        <h1>{recipe?.recipe_name}</h1>
+        <h4>{recipe?.description}</h4>
+        <img src={recipe?.img_source} alt={recipe?.recipe_name} />
+      </div>
+    </div>
   );
 }
 
