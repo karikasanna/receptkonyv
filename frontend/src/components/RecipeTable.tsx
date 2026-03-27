@@ -38,6 +38,7 @@ function RecipeTable() {
 
   return (
     <div>
+      <h1>Receptkönyv</h1>
       <div className="dropdown">
         <label>Válassz kategóriát: </label>
 
@@ -77,8 +78,8 @@ function RecipeTable() {
       </div>
       <div className="recipeCard">
         <h1>{recipe?.recipe_name}</h1>
-        <h4>{recipe?.description}</h4>
-        <img src={recipe?.img_source} alt={recipe?.recipe_name} />
+        <p>{recipe?.description}</p>
+        <img src={recipe?.img_source} alt={recipe?.recipe_name} width={500}/>
       </div>
     </div>
   );
